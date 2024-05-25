@@ -3,7 +3,7 @@ import { join } from 'path';
 
 import { define as $, AchievementSet, Condition, ConditionBuilder, andNext } from '@cruncheevos/core';
 
-import { deltaToZeroBuilder, mapBuilder, noNameBuilder } from './builders.js';
+import * as builders from './builders.js';
 import { address, rpActionLookup, rpMapLookup, rpPurposeLookup } from './data.js';
 
 const reverseLookup = (obj: Record<number, string>): Record<string, number[]> => {
@@ -62,15 +62,14 @@ const makeRp = async (set: AchievementSet) => {
   const displayCodes: Array<[string, ConditionBuilder | undefined]> = [
     [
       `Blazer is successful in defeating Deathtoll.`,
-      $().once(
-        andNext(
-          mapBuilder(0x7d),
-          ['', 'Mem', '8bit', address.curHp, '!=', 'Value', '', 0],
-          deltaToZeroBuilder('8bit', 0x8a5),
-        ),
+      andNext(
+        'once',
+        builders.currentMap(0x7d),
+        ['', 'Mem', '8bit', address.curHp, '!=', 'Value', '', 0],
+        builders.deltaToZero('8bit', 0x8a5),
       ),
     ],
-    [`Blazer is learning how to save the Freil Empire.`, $(noNameBuilder())],
+    [`Blazer is learning how to save the Freil Empire.`, $(builders.playerNotNamed())],
     [
       `Blazer is ${rpAction.point(address.mapId)} ${rpMap.point(address.mapId)} to ${rpPurpose.point(address.mapId)}. Lvl: ${rpLevel}, HP: ${rpHp}, EXP: ${rpExp}, 💎: ${rpGems}.`,
       undefined,

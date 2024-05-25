@@ -1,6 +1,6 @@
 {
   "name": "soul-blazer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scripted retro achievement support for the game Soul Blazer (SNES).",
   "type": "module",
   "main": "index.js",

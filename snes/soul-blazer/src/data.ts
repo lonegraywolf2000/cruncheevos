@@ -114,6 +114,7 @@ export const stoneCheevoData: CommonItemCheevo[] = [
   },
   {
     title: "Gettin' Lucky",
+    type: 'progression',
     points: 2,
     desc: 'Find the Lucky Blade and those sweet, sweet GEMs.',
     value: 0x04,
@@ -121,6 +122,7 @@ export const stoneCheevoData: CommonItemCheevo[] = [
   },
   {
     title: 'Finally!',
+    type: 'progression',
     points: 3,
     desc: 'Get the Zantetsu Sword. Now go back and seal those lairs!',
     value: 0x05,
@@ -128,6 +130,7 @@ export const stoneCheevoData: CommonItemCheevo[] = [
   },
   {
     title: 'Ghost Buster',
+    type: 'progression',
     points: 4,
     desc: 'Find the Sprit Sword and put those tortured souls to rest...THE HARD WAY.',
     value: 0x06,
@@ -286,6 +289,7 @@ export const stoneCheevoData: CommonItemCheevo[] = [
   },
   {
     title: '3spooky5me',
+    type: 'progression',
     points: 5,
     desc: "Get the Red-Hot Mirror. Please don't sneak up behind that bird anymore.",
     value: 0x32,
@@ -757,6 +761,7 @@ export const damagelessData: DamagelessCheevo[] = [
 
 export type ExpCheevo = {
   title: string;
+  type?: Achievement.Type;
   target: number;
   prev: number;
   desc: string;
@@ -766,6 +771,7 @@ export type ExpCheevo = {
 export const expData: ExpCheevo[] = [
   {
     title: 'Angelo',
+    type: 'progression',
     desc: '10 and become a servant of The Master.',
     prev: 0x09,
     target: 0x10,
@@ -773,6 +779,7 @@ export const expData: ExpCheevo[] = [
   },
   {
     title: 'Throne',
+    type: 'progression',
     desc: '20. Do you feel the power of The Master?',
     prev: 0x19,
     target: 0x20,

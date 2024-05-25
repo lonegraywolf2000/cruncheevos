@@ -10,21 +10,9 @@ import {
   resetIf,
   trigger,
 } from '@cruncheevos/core';
+
 import { Access, address, damagelessData, expData, sealCheevoData, soulCheevoData, stoneCheevoData } from './data.js';
-import {
-  deltaCmpBuilder,
-  mapBuilder,
-  nameBuilder,
-  changeMapBuilder,
-  gotItemBuilder,
-  deltaToConstantBuilder,
-  deltaToZeroBuilder,
-  resetHitBuilder,
-  resetIfLairSealedBuilder,
-  resetIfDamagedBuilder,
-  sealLairBuilder,
-  deltaFromConstantToConstantBuilder,
-} from './builders.js';
+import * as builders from './builders.js';
 
 const makeCheevos = (set: AchievementSet): void => {
   for (const data of soulCheevoData) {
@@ -33,7 +21,11 @@ const makeCheevos = (set: AchievementSet): void => {
       description: `Find a magical soul to ${data.desc}.`,
       points: 3,
       type: data.type || '',
-      conditions: $(deltaCmpBuilder(data.size, address.skyCreatures), mapBuilder(data.map), nameBuilder()),
+      conditions: $(
+        builders.simpleDeltaCmp(data.size, address.skyCreatures),
+        builders.currentMap(data.map),
+        builders.playerNamed(),
+      ),
     });
   }
 
@@ -43,23 +35,27 @@ const makeCheevos = (set: AchievementSet): void => {
     description: 'A girl searches for her lost father, but finds him only in dreams.',
     type: 'progression',
     conditions: $(
-      changeMapBuilder(0x0e, 0x01),
+      builders.changedMap(0x0e, 0x01),
       ['', 'Mem', 'Bit2', address.lisaDreamGate, '=', 'Value', '', 1],
       ['', 'Mem', '8bit', address.magicBell, '=', 'Value', '', 0],
-      nameBuilder(),
+      builders.playerNamed(),
     ),
   });
   set.addAchievement({
     title: 'The Goat Saw Everything',
     points: 2,
     description: 'Find the hidden Medical Herb in Grass Valley.',
-    conditions: $(deltaCmpBuilder('Bit3', address.goatHerb), mapBuilder(0x01), nameBuilder()),
+    conditions: $(builders.simpleDeltaCmp('Bit3', address.goatHerb), builders.currentMap(0x01), builders.playerNamed()),
   });
   set.addAchievement({
     title: "Kids Don't See Everything",
     points: 5,
     description: 'Find the hidden Strange Bottle in Grass Valley.',
-    conditions: $(deltaCmpBuilder('Bit4', address.bottleGrass), mapBuilder(0x01), nameBuilder()),
+    conditions: $(
+      builders.simpleDeltaCmp('Bit4', address.bottleGrass),
+      builders.currentMap(0x01),
+      builders.playerNamed(),
+    ),
   });
 
   for (const data of stoneCheevoData) {
@@ -70,9 +66,9 @@ const makeCheevos = (set: AchievementSet): void => {
       description: data.desc,
       points: data.points,
       conditions: $(
-        gotItemBuilder(address.inventoryOffset + data.value, data.value),
-        mapBuilder(data.map),
-        nameBuilder(),
+        builders.gotItem(address.inventoryOffset + data.value, data.value),
+        builders.currentMap(data.map),
+        builders.playerNamed(),
       ),
     });
   }
@@ -83,13 +79,13 @@ const makeCheevos = (set: AchievementSet): void => {
     points: 25,
     type: 'win_condition',
     conditions: $(
-      once(andNext(deltaToConstantBuilder('8bit', address.mapId, 0x7d))),
+      andNext('once', builders.simpleDeltaToConstant('8bit', address.mapId, 0x7d)),
       once('0xh8a5=100'),
-      deltaToZeroBuilder('8bit', address.deathtollHealth),
-      resetIf(andNext(deltaToZeroBuilder('8bit', address.curHp))),
-      mapBuilder(0x7d, 'Mem', true),
-      resetHitBuilder(),
-      nameBuilder(),
+      builders.deltaToZero('8bit', address.deathtollHealth),
+      resetIf(andNext(builders.deltaToZero('8bit', address.curHp))),
+      builders.currentMap(0x7d, 'Mem', true),
+      builders.resetButtonHit(),
+      builders.playerNamed(),
     ),
   });
 
@@ -130,7 +126,7 @@ const makeCheevos = (set: AchievementSet): void => {
       title,
       description: `Seal all monster lairs ${desc}.`,
       points: 5,
-      conditions: $(mapListBuilder(maps), minPrev, maxPrev, measured(curr), measuredIf(nameBuilder())),
+      conditions: $(mapListBuilder(maps), minPrev, maxPrev, measured(curr), measuredIf(builders.playerNamed())),
     });
   };
 
@@ -147,11 +143,11 @@ const makeCheevos = (set: AchievementSet): void => {
       points: data.points,
       type: 'missable',
       conditions: $(
-        once(andNext(deltaToConstantBuilder('8bit', address.mapId, data.map))),
-        resetIfLairSealedBuilder(data.lair),
-        resetHitBuilder(),
-        resetIfDamagedBuilder(),
-        trigger(sealLairBuilder(data.lair)),
+        andNext('once', builders.simpleDeltaToConstant('8bit', address.mapId, data.map)),
+        builders.lairAlreadySealed(data.lair),
+        builders.resetButtonHit(),
+        builders.playerDamaged(),
+        trigger(builders.sealLair(data.lair)),
       ),
     });
   }
@@ -161,21 +157,25 @@ const makeCheevos = (set: AchievementSet): void => {
     description: "Defeat Deathtoll's demon form without getting hit.",
     points: 25,
     conditions: $(
-      once(andNext(deltaToConstantBuilder('8bit', address.mapId, 0x7d))),
+      andNext('once', builders.simpleDeltaToConstant('8bit', address.mapId, 0x7d)),
       once('0xh8a5=100'),
-      resetHitBuilder(),
-      resetIfDamagedBuilder(),
-      nameBuilder(true),
-      trigger(deltaToZeroBuilder('8bit', 0x8a5)),
+      builders.resetButtonHit(),
+      builders.playerDamaged(),
+      builders.playerNamed(true),
+      trigger(builders.deltaToZero('8bit', 0x8a5)),
     ),
   });
 
   for (const data of expData) {
     set.addAchievement({
       title: data.title,
+      type: data.type || '',
       description: `Reach EXP level ${data.desc}`,
       points: data.points,
-      conditions: $(deltaFromConstantToConstantBuilder('8bit', address.level, data.prev, data.target), nameBuilder()),
+      conditions: $(
+        builders.simpleDeltaTwoConstants('8bit', address.level, data.prev, data.target),
+        builders.playerNamed(),
+      ),
     });
   }
 };
