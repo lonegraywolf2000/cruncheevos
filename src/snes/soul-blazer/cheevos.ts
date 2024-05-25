@@ -11,8 +11,10 @@ import {
   trigger,
 } from '@cruncheevos/core';
 
-import { Access, address, damagelessData, expData, sealCheevoData, soulCheevoData, stoneCheevoData } from './data.js';
+import * as commonBuilders from '../../common/builders.js';
+
 import * as builders from './builders.js';
+import { Access, address, damagelessData, expData, sealCheevoData, soulCheevoData, stoneCheevoData } from './data.js';
 
 const makeCheevos = (set: AchievementSet): void => {
   for (const data of soulCheevoData) {
@@ -173,7 +175,7 @@ const makeCheevos = (set: AchievementSet): void => {
       description: `Reach EXP level ${data.desc}`,
       points: data.points,
       conditions: $(
-        builders.simpleDeltaTwoConstants('8bit', address.level, data.prev, data.target),
+        commonBuilders.simpleCmpTwoConstants('8bit', address.level, data.prev, data.target),
         builders.playerNamed(),
       ),
     });

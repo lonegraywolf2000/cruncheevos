@@ -21,23 +21,6 @@ export const simpleDeltaCmp = (
 ): ConditionBuilder => $(['', 'Mem', size, addr, cmp, 'Delta', size, addr]);
 
 /**
- * Compare when one memory address goes from one specifi value to another.
- * @param size The memory size.
- * @param addr The address in RAM.
- * @param prev The value on the previous frame.
- * @param curr The value on the current frame.
- * @returns The appropriate condition string.
- */
-export const simpleDeltaTwoConstants = (
-  size: Condition.Size,
-  addr: number,
-  prev: number,
-  curr: number,
-): ConditionBuilder => {
-  return $(['', 'Delta', size, addr, '=', 'Value', '', prev], ['', 'Mem', size, addr, '=', 'Value', '', curr]);
-};
-
-/**
  * A partial cheevo builder to see if a value got sent a specific value.
  *
  * In this implementation, we don't care about what the previous value was.

@@ -1,13 +1,14 @@
 {
-  "name": "soul-blazer",
-  "version": "1.0.1",
-  "description": "Scripted retro achievement support for the game Soul Blazer (SNES).",
+  "name": "wolfman2000-cruncheevos",
+  "version": "2.0.0",
+  "description": "Scripted retro achievement support using the cruncheevos system by suXinjke.",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "diff": "npx tsc && npx cruncheevos diff build/index.js",
-    "diff-rich": "npx tsc && npx cruncheevos diff build/index.js rich"
+    "build": "npx tsc",
+    "diff": "npx tsc && npx cruncheevos diff",
+    "diff-save": "npx tsc && npx cruncheevos diff-save"
   },
   "author": "wolfman2000",
   "license": "MIT",
