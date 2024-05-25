@@ -5,9 +5,6 @@ import makeRp from './rp.js';
 
 const set = new AchievementSet({ gameId: 1168, title: 'Soul Blazer' });
 makeCheevos(set);
-// Rich Presence
-if (process.argv.includes('rich')) {
-  await makeRp(set).catch(console.log);
-}
+await makeRp(set).catch(console.log);
 
 export default set;
