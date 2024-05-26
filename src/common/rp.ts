@@ -111,8 +111,8 @@ export const rpMakeLookup = (
 
   return {
     rich,
-    point(address: number) {
-      return `@${name}(${prefixToRp(prefix)}${memorySizeToRp(size)}${address.toString(16).toUpperCase()})`;
+    point(address: number, offset: number = 0) {
+      return `@${name}(${prefixToRp(prefix)}${memorySizeToRp(size)}${(address + offset).toString(16).toUpperCase()})`;
     },
   };
 };

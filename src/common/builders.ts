@@ -33,3 +33,16 @@ export const simpleCmpTwoConstants = (
 ): ConditionBuilder => {
   return $(['', valueType, size, addr, '=', 'Value', '', prev], ['', 'Mem', size, addr, '=', 'Value', '', curr]);
 };
+
+/**
+ * A simple delta builder for a single address in memory.
+ * @param size The measurement to use on the address.
+ * @param addr The address in RAM for both operations.
+ * @param cmp The comparison operator to use when comparing against deltas.
+ * @returns The delta comparison.
+ */
+export const simpleDeltaCmp = (
+  size: Condition.Size,
+  addr: number,
+  cmp: Condition.OperatorComparison = '>',
+): ConditionBuilder => $(['', 'Mem', size, addr, cmp, 'Delta', size, addr]);
