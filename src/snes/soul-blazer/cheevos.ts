@@ -24,7 +24,7 @@ const makeCheevos = (set: AchievementSet): void => {
       points: 3,
       type: data.type || '',
       conditions: $(
-        builders.simpleDeltaCmp(data.size, address.skyCreatures),
+        commonBuilders.simpleDeltaCmp(data.size, address.skyCreatures),
         builders.currentMap(data.map),
         builders.playerNamed(),
       ),
@@ -47,14 +47,18 @@ const makeCheevos = (set: AchievementSet): void => {
     title: 'The Goat Saw Everything',
     points: 2,
     description: 'Find the hidden Medical Herb in Grass Valley.',
-    conditions: $(builders.simpleDeltaCmp('Bit3', address.goatHerb), builders.currentMap(0x01), builders.playerNamed()),
+    conditions: $(
+      commonBuilders.simpleDeltaCmp('Bit3', address.goatHerb),
+      builders.currentMap(0x01),
+      builders.playerNamed(),
+    ),
   });
   set.addAchievement({
     title: "Kids Don't See Everything",
     points: 5,
     description: 'Find the hidden Strange Bottle in Grass Valley.',
     conditions: $(
-      builders.simpleDeltaCmp('Bit4', address.bottleGrass),
+      commonBuilders.simpleDeltaCmp('Bit4', address.bottleGrass),
       builders.currentMap(0x01),
       builders.playerNamed(),
     ),

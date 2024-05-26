@@ -8,19 +8,6 @@ import { address } from './data.js';
 export const resetButtonHit = () => resetIf(['', 'Mem', '16bit', 0x20, '=', 'Value', '', 0]);
 
 /**
- * A simple delta builder for a single address in memory.
- * @param size The measurement to use on the address.
- * @param addr The address in RAM for both operations.
- * @param cmp The comparison operator to use when comparing against deltas.
- * @returns The delta comparison.
- */
-export const simpleDeltaCmp = (
-  size: Condition.Size,
-  addr: number,
-  cmp: Condition.OperatorComparison = '>',
-): ConditionBuilder => $(['', 'Mem', size, addr, cmp, 'Delta', size, addr]);
-
-/**
  * A partial cheevo builder to see if a value got sent a specific value.
  *
  * In this implementation, we don't care about what the previous value was.
