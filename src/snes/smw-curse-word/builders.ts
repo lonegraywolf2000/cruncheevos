@@ -27,8 +27,11 @@ export const beatLevel = () =>
 
 export const activeLevel = (level: number) => commonBuilders.simpleCmpOneConstant('8bit', address.activeLevel, level);
 
+export const noCheckpoint = () =>
+  $(['AddAddress', 'Mem', '8bit', address.activeLevel], ['', 'Mem', 'Bit6', address.levelBase, '=', 'Value', '', 0]);
+
 export const loadLevel = (level: number) =>
-  $(activeLevel(level), commonBuilders.simpleCmpTwoConstants('8bit', address.gameState, 17, 18));
+  $(activeLevel(level), noCheckpoint(), commonBuilders.simpleCmpTwoConstants('8bit', address.gameState, 17, 18));
 
 export const outOfLevel = () => commonBuilders.simpleCmpOneConstant('8bit', address.gameState, 14, '<=');
 
