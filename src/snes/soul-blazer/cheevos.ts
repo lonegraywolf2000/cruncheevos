@@ -24,7 +24,7 @@ const makeCheevos = (set: AchievementSet): void => {
       points: 3,
       type: data.type || '',
       conditions: $(
-        commonBuilders.simpleDeltaCmp(data.size, address.skyCreatures),
+        commonBuilders.simpleCurrPrevCmp(data.size, address.skyCreatures),
         builders.currentMap(data.map),
         builders.playerNamed(),
       ),
@@ -48,7 +48,7 @@ const makeCheevos = (set: AchievementSet): void => {
     points: 2,
     description: 'Find the hidden Medical Herb in Grass Valley.',
     conditions: $(
-      commonBuilders.simpleDeltaCmp('Bit3', address.goatHerb),
+      commonBuilders.simpleCurrPrevCmp('Bit3', address.goatHerb),
       builders.currentMap(0x01),
       builders.playerNamed(),
     ),
@@ -58,7 +58,7 @@ const makeCheevos = (set: AchievementSet): void => {
     points: 5,
     description: 'Find the hidden Strange Bottle in Grass Valley.',
     conditions: $(
-      commonBuilders.simpleDeltaCmp('Bit4', address.bottleGrass),
+      commonBuilders.simpleCurrPrevCmp('Bit4', address.bottleGrass),
       builders.currentMap(0x01),
       builders.playerNamed(),
     ),

@@ -25,19 +25,19 @@ type DumbConditions = {
   alt8: ConditionBuilder;
 };
 
-const changedHole = (addr: number) => commonBuilders.simpleDeltaCmp('8bit', addr, '!=');
+const changedHole = (addr: number) => commonBuilders.simpleCurrPrevCmp('8bit', addr, '!=');
 
-const onePlayer = (addr: number) => commonBuilders.simpleCmpOneConstant('8bit', addr, 0);
+const onePlayer = (addr: number) => commonBuilders.simpleCurrCompare('8bit', addr, 0);
 
-const ballInHole = (addr: number) => commonBuilders.simpleDeltaCmp('8bit', addr, '<');
+const ballInHole = (addr: number) => commonBuilders.simpleCurrPrevCmp('8bit', addr, '<');
 
-const sandTrap = (addr: number) => commonBuilders.simpleCmpOneConstant('8bit', addr, 1);
-const outOfBounds = (addr: number) => commonBuilders.simpleCmpOneConstant('8bit', addr, 4);
+const sandTrap = (addr: number) => commonBuilders.simpleCurrCompare('8bit', addr, 1);
+const outOfBounds = (addr: number) => commonBuilders.simpleCurrCompare('8bit', addr, 4);
 
 const powerBarValue = (size: Condition.Size, addr: number, value: number) =>
-  commonBuilders.simpleCmpOneConstant(size, addr, value);
+  commonBuilders.simpleCurrCompare(size, addr, value);
 
-const powerBarSame = (size: Condition.Size, addr: number) => commonBuilders.simpleDeltaCmp(size, addr, '=');
+const powerBarSame = (size: Condition.Size, addr: number) => commonBuilders.simpleCurrPrevCmp(size, addr, '=');
 
 const withinPar = (shots: number, par: number) => $(['', 'Mem', '8bit', shots, '<=', 'Mem', '8bit', par]);
 
@@ -46,7 +46,7 @@ const startGame = (addr: number) =>
 
 const finishGame = (offset: number) =>
   $(
-    commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, 9),
+    commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, 9),
     ballInHole(baseAddress.ballInHole + offset),
   );
 
@@ -63,7 +63,7 @@ export const parCheevo = (hole: number): DumbConditions => {
   possibleOffsets.forEach((offset, index) => {
     const conditions = altProtection(offset).also(
       onePlayer(baseAddress.gameType + offset),
-      commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, hole + 1),
+      commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, hole + 1),
       ['', 'Mem', '8bit', baseAddress.currentShots + offset, '<=', 'Mem', '8bit', baseAddress.parAmount + offset],
       ballInHole(baseAddress.ballInHole + offset),
     );
@@ -99,7 +99,7 @@ export const sandTrapCheevo = (): DumbConditions => {
       onePlayer(baseAddress.gameType + offset),
       withinPar(baseAddress.currentShots + offset, baseAddress.parAmount + offset),
       once(sandTrap(baseAddress.ballStatus + offset)),
-      resetIf(commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, 0)),
+      resetIf(commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, 0)),
       resetIf(changedHole(baseAddress.holeNumber + offset)),
       trigger(ballInHole(baseAddress.ballInHole + offset)),
     );
@@ -116,7 +116,7 @@ export const boxCheevo = (): DumbConditions => {
     const conditions = altProtection(offset).also(
       onePlayer(baseAddress.gameType + offset),
       once(startGame(baseAddress.soundByte + offset)),
-      resetIf(commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, 0)),
+      resetIf(commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, 0)),
       resetIf(outOfBounds(baseAddress.ballStatus + offset)),
       trigger(finishGame(offset)),
     );
@@ -163,8 +163,8 @@ export const leaderCancel = (): DumbConditions => {
   possibleOffsets.forEach((offset, index) => {
     const conditions = altProtection(offset).also(
       orNext(
-        commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, 0),
-        commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, 255),
+        commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, 0),
+        commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, 255),
       ),
     );
     target['alt' + (index + 1)] = conditions;
@@ -189,7 +189,7 @@ export const leaderValueTime = (): DumbConditions => {
   };
   possibleOffsets.forEach((offset, index) => {
     const conditions = altProtection(offset).also(
-      measured(commonBuilders.simpleCmpOneConstant('8bit', baseAddress.ballInHole + offset, 1)),
+      measured(commonBuilders.simpleCurrCompare('8bit', baseAddress.ballInHole + offset, 1)),
     );
     target['alt' + (index + 1)] = conditions;
   });
@@ -203,8 +203,8 @@ export const leaderValueScore = (): DumbConditions => {
   possibleOffsets.forEach((offset, index) => {
     const conditions = altProtection(offset)
       .resetIf(
-        commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, 0),
-        commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, 255),
+        commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, 0),
+        commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, 255),
       )
       .also(
         // TODO: Convert this block to proper functions.

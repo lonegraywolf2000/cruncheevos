@@ -1,6 +1,6 @@
 import { define as $, AchievementSet, andNext, once, resetIf, trigger } from '@cruncheevos/core';
 
-import { simpleDeltaCmp } from '../../common/builders.js';
+import { simpleCurrPrevCmp } from '../../common/builders.js';
 
 import { beatLevelData, cheevoLevels, levelDeathData, levelLookup, levelSmallData, smallCheevoLevels } from './data.js';
 import { activeLevel, beatLevel, deathCount, isPoweredUp, loadLevel, notBeatenYet, outOfLevel } from './builders.js';
@@ -46,7 +46,7 @@ const makeCheevos = (set: AchievementSet): void => {
     title: 'Figures This Appears Somehow',
     description: 'Collect the only 3-up moon in the game.',
     points: 5,
-    conditions: $(activeLevel(8), simpleDeltaCmp('Bit7', 0x1fef, '>')),
+    conditions: $(activeLevel(8), simpleCurrPrevCmp('Bit7', 0x1fef, '>')),
   });
 };
 

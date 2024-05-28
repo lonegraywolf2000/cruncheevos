@@ -1,6 +1,6 @@
 {
   "name": "wolfman2000-cruncheevos",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "Scripted retro achievement support using the cruncheevos system by suXinjke.",
   "type": "module",
   "main": "index.js",
@@ -13,8 +13,8 @@
   "author": "wolfman2000",
   "license": "MIT",
   "dependencies": {
-    "@cruncheevos/cli": "^0.0.2",
-    "@cruncheevos/core": "^0.0.2"
+    "@cruncheevos/cli": "^0.0.3",
+    "@cruncheevos/core": "^0.0.3"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",

@@ -27,27 +27,27 @@ const makeRp = async (set: AchievementSet) => {
     (offset) => [
       'Playing Golf with a friend',
       $(
-        commonBuilders.simpleCmpOneConstant('32bit', offset, 0xffffffff, '!='),
-        commonBuilders.simpleCmpOneConstant('32bit', offset, 0xff000000, '!='),
-        commonBuilders.simpleCmpOneConstant('8bit', baseAddress.gameType + offset, 0, '!='),
-        commonBuilders.simpleCmpOneConstant('8bit', baseAddress.gameType + offset, 3, '<'),
+        commonBuilders.simpleCurrCompare('32bit', offset, 0xffffffff, '!='),
+        commonBuilders.simpleCurrCompare('32bit', offset, 0xff000000, '!='),
+        commonBuilders.simpleCurrCompare('8bit', baseAddress.gameType + offset, 0, '!='),
+        commonBuilders.simpleCurrCompare('8bit', baseAddress.gameType + offset, 3, '<'),
       ),
     ],
     (offset) => [
       `End result: ${rpSign.point(0x12b, offset)}${rpMakeSimpleNumber(0x108 + offset, '8bit')}`,
       $(
-        commonBuilders.simpleCmpOneConstant('32bit', offset, 0xffffffff, '!='),
-        commonBuilders.simpleCmpOneConstant('32bit', offset, 0xff000000, '!='),
-        commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, 10),
+        commonBuilders.simpleCurrCompare('32bit', offset, 0xffffffff, '!='),
+        commonBuilders.simpleCurrCompare('32bit', offset, 0xff000000, '!='),
+        commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, 10),
       ),
     ],
     (offset) => [
       `Hole ${rpMakeSimpleNumber(baseAddress.holeNumber + offset, '8bit')}, Par ${rpMakeSimpleNumber(baseAddress.parAmount + offset, '8bit')} Wind ${rpWindDir.point(0x105, offset)}${rpMakeSimpleNumber(0x104 + offset, '8bit')}M Score ${rpSign.point(0x12b, offset)}${rpMakeSimpleNumber(0x108 + offset, '8bit')}`,
       $(
-        commonBuilders.simpleCmpOneConstant('32bit', offset, 0xffffffff, '!='),
-        commonBuilders.simpleCmpOneConstant('32bit', offset, 0xff000000, '!='),
-        commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, 0, '!='),
-        commonBuilders.simpleCmpOneConstant('8bit', baseAddress.holeNumber + offset, 9, '<='),
+        commonBuilders.simpleCurrCompare('32bit', offset, 0xffffffff, '!='),
+        commonBuilders.simpleCurrCompare('32bit', offset, 0xff000000, '!='),
+        commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, 0, '!='),
+        commonBuilders.simpleCurrCompare('8bit', baseAddress.holeNumber + offset, 9, '<='),
       ),
     ],
   ];
