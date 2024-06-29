@@ -9,6 +9,21 @@ const simpleCmpOneConstant = (
 ) => $(['', valueType, size, addr, cmp, 'Value', '', target]);
 
 /**
+ * Compare a memory address's prior value against a static value, and make decisions from there.
+ * @param size The size of the address being looked at.
+ * @param addr The address in RAM.
+ * @param target The value to compare against.
+ * @param cmp The comparison to use.
+ * @returns The appropriate condition.
+ */
+export const simplePriorCompare = (
+  size: Condition.Size,
+  addr: number,
+  target: number,
+  cmp: Condition.OperatorComparison = '<',
+) => simpleCmpOneConstant(size, addr, target, cmp, 'Prior');
+
+/**
  * Compare a memory address's previous frame against a static value, and make decisions from there.
  * @param size The size of the address being looked at.
  * @param addr The address in RAM.
