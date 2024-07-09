@@ -1,4 +1,12 @@
-import { define as $, Condition } from '@cruncheevos/core';
+import { define as $, Condition, ConditionBuilder } from '@cruncheevos/core';
+import { isNumber } from '@cruncheevos/core/util';
+
+const toHexString = (item: string | number): string => {
+  if (isNumber(item)) {
+    return `0x${item.toString(16)}`;
+  }
+  return toHexString(Number(item));
+};
 
 const memorySizeToRp = (size: Condition.Size): string => {
   switch (size) {
@@ -115,6 +123,80 @@ export const rpMakeLookup = (
       return `@${name}(${prefixToRp(prefix)}${memorySizeToRp(size)}${(address + offset).toString(16).toUpperCase()})`;
     },
   };
+};
+
+type RpLookup = {
+  name: string;
+  toString: () => string;
+  point: (input: number) => string;
+  defaultPoint: () => ConditionBuilder;
+};
+
+/**
+ * Generate rich presence with a more robust setup.
+ * @param name The name to use for the RP.
+ * @param defaultAddress The memory address for the lookup.
+ * @param values The object values to process. Default values must be supplied to this function.
+ * @param keyFormat If the key is a number, indicate if it's `dec` for decimal here.
+ * @returns The formatted rich presence.
+ */
+export const makeRichPresenceLookup = (
+  name: string,
+  defaultAddress: ConditionBuilder,
+  values: Record<number | string, string>,
+  keyFormat?: string,
+): RpLookup => {
+  let rich = `Lookup:${name}`;
+  for (const inputKey in values) {
+    const keyNumber = Number(inputKey);
+    const key = Number.isNaN(keyNumber)
+      ? inputKey
+      : keyFormat === 'dec'
+        ? keyNumber
+        : toHexString(keyNumber).toLowerCase().padStart(2, '0');
+
+    rich += `\n${key}=${values[inputKey]}`;
+  }
+
+  return {
+    name,
+    toString() {
+      return rich;
+    },
+    point(input) {
+      return `@${name}(${input.toString()})`;
+    },
+    defaultPoint() {
+      if (!defaultAddress) {
+        throw new Error('default address not set');
+      }
+      return defaultAddress;
+    },
+  };
+};
+
+/**
+ * Generate the display text for the RP.
+ * @param args The two parts of a condition builder.
+ * @returns The lines of the RP.
+ */
+export function makeRichPresenceDisplay(...args) {
+  const condition = args.length >= 2 ? `?${args[0]}?` : '';
+  const value = args.length >= 2 ? args[1] : args[0];
+
+  return condition + value;
+}
+
+export const displayValue = (strings: TemplateStringsArray, ...args): string => {
+  return strings
+    .map((str, i) => {
+      let val = i === strings.length - 1 ? '' : args[i];
+      if (val.defaultPoint) {
+        val = `@${val.name}(${val.defaultPoint()})`;
+      }
+      return `${str}${val}`;
+    })
+    .join('');
 };
 
 /**
