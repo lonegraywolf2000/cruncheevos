@@ -1,9 +1,6 @@
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
-import { AchievementSet } from '@cruncheevos/core';
+import { define as $, RichPresence } from '@cruncheevos/core';
 
-import { rpMakeLookup, rpMakeSimpleNumber } from '../../common/rp.js';
-import { RpDisplayCode } from '../../common/types.js';
+import { rpMakeLookupLib } from '../../common/rp.js';
 import { address } from './data.js';
 
 const playerLookup = {
@@ -21,37 +18,24 @@ const holeLookup = {
   7: '8th',
 };
 
-const makeRp = async (set: AchievementSet) => {
-  const rpPlayer = rpMakeSimpleNumber(address.playerCount, '8bit');
-  const rpPlayerText = rpMakeLookup('Player', '8bit', playerLookup, 'Players');
-  const rpHole = rpMakeLookup('Hole', '8bit', holeLookup, '9th');
-  const displayCodes: RpDisplayCode[] = [
-    [
-      `${rpPlayer} ${rpPlayerText.point(address.playerCount)} on the ${rpHole.point(address.holeNumber)} green.`,
-      undefined,
-    ],
-  ];
+const makeRp = () => {
+  const Player = rpMakeLookupLib('Player', '8bit', address.playerCount, playerLookup, 'Players');
+  const Hole = rpMakeLookupLib('Hole', '8bit', address.holeNumber, holeLookup, '9th');
+  const Count = RichPresence.macro.Number.at($(['Measured', 'Mem', '8bit', address.playerCount]));
 
-  let result = [rpHole.rich, rpPlayerText.rich].join('\n');
-  result += `\nFormat:Number\nFormatType=VALUE\n\nDisplay:\n`;
-
-  for (const dc of displayCodes) {
-    const [message, codes] = dc;
-    if (codes != undefined) {
-      result += `?${[...codes].join('_')}?${message}\n`;
-    } else {
-      result += `${message}\n`;
-    }
-  }
-
-  const rootDir = process.env.RACACHE;
-  const targetFile = join(rootDir!, 'RACache', 'Data', `${set.gameId}-Rich.txt`);
-
-  if (process.argv.some((a) => a === 'save' || a === 'diff-save')) {
-    await writeFile(targetFile, result);
-  } else {
-    console.log(result);
-  }
+  const rp = RichPresence({
+    lookupDefaultParameters: { keyFormat: 'dec', compressRanges: true },
+    format: {
+      Score: 'VALUE',
+    },
+    lookup: {
+      Player,
+      Hole,
+    },
+    displays: ({ lookup, tag }) => [tag`${Count} ${lookup.Player} on the ${lookup.Hole} green.`],
+  });
+  console.log(rp.toString());
+  return rp;
 };
 
 export default makeRp;

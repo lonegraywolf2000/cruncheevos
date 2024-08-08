@@ -401,7 +401,7 @@ export const sealCheevoData: SealCheevo[] = [
   {
     title: 'Craving Critters and Beastie Bedtime',
     desc: 'in Lostside and GreenWood',
-    maps: [0x15, 0x19],
+    maps: [0x15, 0x16, 0x17, 0x18, 0x19, 0x23, 0x24],
     lairs: [
       { addr: 0x1aa5, size: 'BitCount' },
       { addr: 0x1aa6, size: 'Bit0' },
@@ -413,7 +413,7 @@ export const sealCheevoData: SealCheevo[] = [
   {
     title: 'Hungry Squirrels and Friendly Crocs',
     desc: 'in the Water Shrine',
-    maps: [0x15, 0x1a, 0x1b, 0x1c],
+    maps: [0x15, 0x16, 0x17, 0x18, 0x1a, 0x1b, 0x1c],
     lairs: [
       { addr: 0x1aa6, size: 'Bit2' },
       { addr: 0x1aa6, size: 'Bit3' },
@@ -430,7 +430,7 @@ export const sealCheevoData: SealCheevo[] = [
   {
     title: 'Heat of the Grave',
     desc: 'in the Fire Shrine',
-    maps: [0x15, 0x1d, 0x1e, 0x1f],
+    maps: [0x15, 0x16, 0x17, 0x18, 0x1d, 0x1e, 0x1f],
     lairs: [
       { addr: 0x1aa8, size: 'Bit3' },
       { addr: 0x1aa8, size: 'Bit4' },
@@ -451,7 +451,7 @@ export const sealCheevoData: SealCheevo[] = [
   {
     title: 'Bringer of Light',
     desc: 'in the Light Shrine',
-    maps: [0x15, 0x18, 0x20, 0x21, 0x22],
+    maps: [0x15, 0x16, 0x17, 0x18, 0x20, 0x21, 0x22],
     lairs: [
       { addr: 0x1aaa, size: 'Bit5' },
       { addr: 0x1aaa, size: 'Bit6' },

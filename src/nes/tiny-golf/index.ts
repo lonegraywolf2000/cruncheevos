@@ -7,6 +7,6 @@ const set = new AchievementSet({
   title: '~Homebrew~ Tiny Golf',
 });
 makeCheevos(set);
-makeRp(set);
+export const rich = makeRp();
 
 export default set;
