@@ -13,8 +13,8 @@
   "author": "wolfman2000",
   "license": "MIT",
   "dependencies": {
-    "@cruncheevos/cli": "^0.0.3",
-    "@cruncheevos/core": "^0.0.3"
+    "@cruncheevos/cli": "^0.0.5",
+    "@cruncheevos/core": "^0.0.5"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
