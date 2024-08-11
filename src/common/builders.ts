@@ -1,5 +1,26 @@
 import { define as $, Condition, ConditionBuilder } from '@cruncheevos/core';
 
+export const delta = (condition: Condition) => condition.with({ lvalue: { type: 'Delta' } });
+export const prior = (condition: Condition) => condition.with({ lvalue: { type: 'Prior' } });
+export const cmpInverted = (condition: Condition) => {
+  switch (condition.cmp) {
+    case '=':
+      return condition.with({ cmp: '!=' });
+    case '!=':
+      return condition.with({ cmp: '=' });
+    case '<':
+      return condition.with({ cmp: '>=' });
+    case '<=':
+      return condition.with({ cmp: '>' });
+    case '>':
+      return condition.with({ cmp: '<=' });
+    case '>=':
+      return condition.with({ cmp: '<' });
+    default:
+      return condition;
+  }
+};
+
 const simpleCmpOneConstant = (
   size: Condition.Size,
   addr: number,

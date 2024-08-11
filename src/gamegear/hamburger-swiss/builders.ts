@@ -2,6 +2,13 @@ import { define as $, Condition } from '@cruncheevos/core';
 import { address } from './data.js';
 import { addSourceMultiple } from '../../common/builders.js';
 
+export const measTotalScore = () =>
+  $(
+    addSourceMultiple('Lower4', address.totalScoreHundreds, 100),
+    addSourceMultiple('Lower4', address.totalScoreTens, 10),
+    ['Measured', 'Mem', 'Lower4', address.totalScoreOnes],
+  );
+
 export const currTotalScore = (target: number, cmp: Condition.OperatorComparison = '=') =>
   $(
     addSourceMultiple('Lower4', address.totalScoreHundreds, 100),

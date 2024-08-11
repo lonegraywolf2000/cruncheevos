@@ -5,6 +5,7 @@ import makeRp from './rp.js';
 
 const set = new AchievementSet({ gameId: 1168, title: 'Soul Blazer' });
 makeCheevos(set);
-await makeRp(set).catch(console.log);
+
+export const rich = makeRp();
 
 export default set;

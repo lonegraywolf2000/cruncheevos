@@ -7,6 +7,7 @@ import makeRp from './rp.js';
 const set = new AchievementSet({ gameId: 29793, title: '~Hack~ slurdgery' });
 makeCheevos(set);
 makeBoards(set);
-await makeRp(set).catch(console.log);
+
+export const rich = makeRp();
 
 export default set;

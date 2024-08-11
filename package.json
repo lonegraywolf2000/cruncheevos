@@ -8,7 +8,8 @@
     "lint": "eslint . --ext .ts",
     "build": "npx tsc",
     "diff": "npx tsc && npx cruncheevos diff",
-    "diff-save": "npx tsc && npx cruncheevos diff-save"
+    "diff-save": "npx tsc && npx cruncheevos diff-save",
+    "rich": "npx tsc && npx cruncheevos rich-save"
   },
   "author": "wolfman2000",
   "license": "MIT",

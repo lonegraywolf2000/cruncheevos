@@ -7,6 +7,7 @@ const set = new AchievementSet({
   title: '~Homebrew~ Hamburgers En Route to Switzerland',
 });
 makeCheevos(set);
-makeRp(set);
+
+export const rich = makeRp();
 
 export default set;

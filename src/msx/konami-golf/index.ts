@@ -7,6 +7,6 @@ import makeRp from './rp.js';
 const set = new AchievementSet({ gameId: 20358, title: "Konami's Golf" });
 makeCheevos(set);
 makeBoards(set);
-await makeRp(set).catch(console.log);
+export const rich = makeRp();
 
 export default set;
