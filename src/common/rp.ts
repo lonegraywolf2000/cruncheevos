@@ -72,7 +72,7 @@ export const rpMakeLookupLib = (
   name: string,
   size: Condition.Size,
   addr: number,
-  obj: Record<number, string>,
+  obj: Record<number, string | number>,
   fallback: string | undefined = undefined,
   prefix: Condition.ValueType = '',
 ) => {
@@ -81,7 +81,12 @@ export const rpMakeLookupLib = (
     values['*'] = fallback;
   }
   for (const key in obj) {
-    values[key] = obj[key];
+    const tmp = obj[key];
+    if (typeof tmp === 'number') {
+      values[key] = '' + tmp;
+    } else {
+      values[key] = tmp;
+    }
   }
 
   const target = `${prefixToRp(prefix)}${memorySizeToRp(size)}${addr.toString(16)}`;
