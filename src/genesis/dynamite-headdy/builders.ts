@@ -39,7 +39,7 @@ export const darkDemonDefeated = () =>
   );
 
 export const actClear = (act: number) =>
-  $(isAlive(), act < 9 && simpleDeltaToConstant('16bit', address.musicId, 0x336d), act == 9 && darkDemonDefeated());
+  $(isAlive(), act < 9 && simpleDeltaToConstant('16bit', address.musicId, 0x33d6), act == 9 && darkDemonDefeated());
 
 export const inStage = (scene: number) => simpleCurrCompare('8bit', address.currentStage, scene);
 
