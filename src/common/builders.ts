@@ -120,3 +120,6 @@ export const addSourceMultiple = (
   factor: number,
   valueType: Condition.ValueType = 'Mem',
 ) => $(['AddSource', valueType, size, addr, '*', 'Value', '', factor]);
+
+export const alwaysFalse = () => $(['', 'Value', '', 0, '=', 'Value', '', 1]);
+export const alwaysTrue = () => $(['', 'Value', '', 1, '=', 'Value', '', 1]);
