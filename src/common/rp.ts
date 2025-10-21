@@ -1,6 +1,6 @@
 import { Condition, RichPresence } from '@cruncheevos/core';
 
-const memorySizeToRp = (size: Condition.Size): string => {
+export const memorySizeToRp = (size: Condition.Size): string => {
   switch (size) {
     case 'Bit0':
       return '0xM';

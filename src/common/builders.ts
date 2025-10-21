@@ -123,3 +123,8 @@ export const addSourceMultiple = (
 
 export const alwaysFalse = () => $(['', 'Value', '', 0, '=', 'Value', '', 1]);
 export const alwaysTrue = () => $(['', 'Value', '', 1, '=', 'Value', '', 1]);
+
+export const plusOne = (condition: Condition | ConditionBuilder) => $(
+  ['AddSource', 'Value', '', 1],
+  condition
+);
